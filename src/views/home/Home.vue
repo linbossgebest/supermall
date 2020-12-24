@@ -1,6 +1,8 @@
 <template>
   <div id="home">
-    <span>home</span>
+    <nav-bar class="title">
+      <div slot="center">购物街</div>
+    </nav-bar>
     <swiper>
       <swiperItem v-for="(item, index) in arr" :key="index">
         <a :href="item.link">
@@ -8,58 +10,17 @@
         </a>
       </swiperItem>
     </swiper>
-    <scroll class="content">
+    <scroll
+      class="content"
+      :data="testdata"
+      :pullup="pullup"
+      @scrollToEnd="loadData"
+      :pulldown="pulldown"
+      @pulldown="refreshData"
+    >
       <ul>
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
-        <li>4</li>
-        <li>5</li>
-        <li>6</li>
-        <li>7</li>
-        <li>8</li>
-        <li>9</li>
-        <li>10</li>
-        <li>11</li>
-        <li>12</li>
-        <li>13</li>
-        <li>14</li>
-        <li>15</li>
-        <li>16</li>
-        <li>17</li>
-        <li>18</li>
-        <li>19</li>
-        <li>20</li>
-        <li>21</li>
-        <li>22</li>
-        <li>23</li>
-        <li>24</li>
-        <li>25</li>
-        <li>26</li>
-        <li>27</li>
-        <li>28</li>
-        <li>29</li>
-        <li>30</li>
-        <li>31</li>
-        <li>32</li>
-        <li>33</li>
-        <li>34</li>
-        <li>35</li>
-        <li>36</li>
-        <li>37</li>
-        <li>38</li>
-        <li>39</li>
-        <li>40</li>
-        <li>41</li>
-        <li>42</li>
-        <li>43</li>
-        <li>44</li>
-        <li>45</li>
-        <li>46</li>
-        <li>47</li>
-        <li>48</li>
-        <li>49</li>
-        <li>50</li>
+        <li><button @click="testClick">button</button> 1</li>
+        <li v-for="(item, index) in testdata" :key="index">{{ item }}</li>
       </ul>
     </scroll>
   </div>
@@ -69,6 +30,7 @@
 import Scroll from "components/common/scroll/Scroll";
 import Swiper from "components/common/swiper/Swiper";
 import SwiperItem from "components/common/swiper/SwiperItem";
+import NavBar from "components/common/navbar/NavBar";
 
 export default {
   name: "Home",
@@ -76,9 +38,12 @@ export default {
     Scroll,
     Swiper,
     SwiperItem,
+    NavBar,
   },
   data() {
     return {
+      pulldown: true,
+      pullup: true,
       arr: [
         {
           name: "1",
@@ -106,14 +71,45 @@ export default {
           image: require("assets/img/swiper/5.jpg"),
         },
       ],
+      testdata: [],
     };
+  },
+  mounted() {
+    for (var i = 0; i < 19; i++) {
+      this.testdata.push(i)
+    }
+  },
+  methods: {
+    testClick() {
+      // this.$router.replace('/detail')
+      this.$router.push("/detail/" + "111");
+      this.$toast.show('跳转详细页面')
+    },
+    loadData() {
+      var data = this.testdata.length + 1;
+      this.testdata.push(data);
+      console.log(this.testdata);
+      // setTimeout(() => {
+
+      // }, 200);
+    },
+    refreshData(){
+      console.log("数据刷新")
+    }
   },
 };
 </script>
 <style scoped>
 .content {
   height: 200px;
-  background: red;
+  background: blue;
   overflow: hidden;
+}
+
+.title {
+  background-color: var(--color-tint);
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 10px;
 }
 </style>
